@@ -19,18 +19,22 @@ jobs:
          password: ${{ secrets.DOCKERHUB_TOKEN }} 
       - name: Build and push Docker image 
         run: | 
-         docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/my-express-app:latest . 
-         docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-express-app:latest
-
-  cleanDocker: 
-    runs-on: ubuntu-latest 
-    steps: 
-    - name: Clean up old Docker containers 
-      uses: appleboy/ssh-action@v0.1.1 
-      with: 
-       host: ${{ secrets.HOST_IP }} 
-       username: ${{ secrets.SSH_USERNAME }} 
-       key: ${{ secrets.HOST_SSH_PRIVATE_KEY }} 
-       script: | 
-        docker stop my-express-app || true 
-        docker rm my-express-app || true
+         cd Cafe_Management_System
+         cd api-gateway
+         docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/api-gateway . 
+         docker push ${{ secrets.DOCKERHUB_USERNAME }}/api-gateway
+         cd ../customer-services
+         docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/customer-services . 
+         docker push ${{ secrets.DOCKERHUB_USERNAME }}/customer-services
+         cd ../inventory-services
+         docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/inventory-services . 
+         docker push ${{ secrets.DOCKERHUB_USERNAME }}/inventory-services
+         cd ../menu-services
+         docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/menu-services . 
+         docker push ${{ secrets.DOCKERHUB_USERNAME }}/menu-services
+         cd ../order-services
+         docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/order-services . 
+         docker push ${{ secrets.DOCKERHUB_USERNAME }}/order-services
+         cd ../payment-services
+         docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/payment-services . 
+         docker push ${{ secrets.DOCKERHUB_USERNAME }}/payment-services
